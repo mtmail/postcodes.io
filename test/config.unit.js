@@ -51,5 +51,19 @@ describe("Config", () => {
         assert.throws(configFactory);
       });
     });
+
+    describe("EAGER_LOAD_IDS", () => {
+      it ("sets eagerLoadId true if configured", () => {
+        process.env["EAGER_LOAD_IDS"] = "1";
+        assert.isTrue(configFactory().eagerLoadIds);
+      });
+      it ("sets eagerLoadId false if set to 'false'", () => {
+        process.env["EAGER_LOAD_IDS"] = "false";
+        assert.isFalse(configFactory().eagerLoadIds);
+      });
+      it ("sets eagerLoadId false if not configured", () => {
+        assert.isFalse(configFactory().eagerLoadIds);
+      });
+    });
   });
 });

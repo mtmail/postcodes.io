@@ -74,6 +74,19 @@ const config = {
   },
 };
 
+
+/**
+ * Parse an ENV variable and return boolean config attribute
+ *
+ * - Returns false if value is not defined or "false" (case insensitive)
+ * - Returns true otherwise
+ */
+const parseBoolean = configValue => {
+  if (configValue === undefined) return false;
+  if (configValue.toLowerCase() === "false") return false;
+  return true;
+};
+
 module.exports = env => {
   const environment = env || defaultEnv;
 
@@ -96,6 +109,7 @@ module.exports = env => {
     PROMETHEUS_PASSWORD,
     SERVE_STATIC_ASSETS,
     HTTP_HEADERS,
+    EAGER_LOAD_IDS,
   } = process.env;
 
   if (PORT !== undefined) cfg.port = PORT;
@@ -122,8 +136,7 @@ module.exports = env => {
   if (PROMETHEUS_PASSWORD !== undefined)
     cfg.prometheusPassword = PROMETHEUS_PASSWORD;
 
-  if (SERVE_STATIC_ASSETS !== undefined)
-    cfg.serveStaticAssets = SERVE_STATIC_ASSETS.toLowerCase() !== "false";
+  cfg.serveStaticAssets = parseBoolean(SERVE_STATIC_ASSETS);
 
   try {
     if (HTTP_HEADERS !== undefined) cfg.httpHeaders = JSON.parse(HTTP_HEADERS);
@@ -133,6 +146,8 @@ module.exports = env => {
     );
     throw error;
   }
+
+  cfg.eagerLoadIds = parseBoolean(EAGER_LOAD_IDS);
 
   return cfg;
 };

@@ -42,6 +42,9 @@ MAPBOX_PUBLIC_KEY
 PROMETHEUS_USERNAME
 PROMETHEUS_PASSWORD
 
+# Eager loading for /random ID cache - speeds up random endpoints
+EAGER_LOAD_IDS # This is false by default
+
 # Application defaults configuration
 NEAREST_RADIUS_DEFAULT
 NEAREST_RADIUS_MAX
